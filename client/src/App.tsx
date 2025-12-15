@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Configurator from "./pages/Configurator";
+import NewConfigurator from "@/pages/NewConfigurator";
 import ComponentsShowcase from "./pages/ComponentShowcase";
 
 function Router() {
@@ -13,7 +14,8 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/builder"} component={Configurator} />
+      <Route path={"/builder"} component={NewConfigurator} />
+      <Route path={"/builder-old"} component={Configurator} />
       <Route path={"/components"} component={ComponentsShowcase} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
