@@ -441,6 +441,22 @@ export interface ModalBlockConfig {
   };
 }
 
+export interface SpacerBlockConfig {
+  type: 'spacer';
+  height?: ResponsiveValue<string>;
+  divider?: {
+    enabled?: boolean;
+    style?: 'solid' | 'dashed' | 'dotted' | 'double';
+    weight?: string;
+    color?: string;
+    width?: string; // percentage or px
+    alignment?: 'left' | 'center' | 'right';
+    text?: string;
+    textPosition?: 'left' | 'center' | 'right';
+    textTypography?: Typography;
+  };
+}
+
 export interface CardBlockConfig {
   type: 'card';
   image?: string;
@@ -1256,6 +1272,7 @@ export type BlockConfigUnion =
   | TabsBlockConfig
   | ModalBlockConfig
   | CardBlockConfig
+  | SpacerBlockConfig
   | MenuBlockConfig
   | BreadcrumbsBlockConfig
   | PaginationBlockConfig

@@ -9,12 +9,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Plus, Download, Copy, Eye, Settings, Trash2 } from 'lucide-react';
+import SpacerBlock from '@/components/SpacerBlock';
+import SpacerControls from '@/components/SpacerControls';
+import ContainerBlock from '@/components/ContainerBlock';
+import ContainerControls from '@/components/ContainerControls';
 import { BlockPicker } from '@/components/BlockPicker';
 import { createBlockInstance, getBlockDefinition } from '@/lib/blockRegistry';
 import { BaseBlockConfig, GlobalSettings } from '@/types/blockTypes';
 
 export default function NewConfigurator() {
   const [blocks, setBlocks] = useState<BaseBlockConfig[]>([]);
+  const [activeContainerId, setActiveContainerId] = useState<string | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
@@ -45,9 +50,30 @@ export default function NewConfigurator() {
   // Handle block selection from picker
   const handleBlockSelect = useCallback((blockType: string) => {
     const newBlock = createBlockInstance(blockType);
-    setBlocks(prev => [...prev, newBlock]);
+    
+    if (activeContainerId) {
+      // Add to the active container's children
+      setBlocks(prev => prev.map(block => {
+        if (block.id === activeContainerId && block.type === 'container') {
+          return {
+            ...block,
+            config: {
+              ...block.config,
+              children: [...(block.config as ContainerBlockConfig).children || [], newBlock],
+            } as ContainerBlockConfig,
+          };
+        }
+        return block;
+      }));
+    } else {
+      // Add to the root level
+      setBlocks(prev => [...prev, newBlock]);
+    }
+    
+    // Close the picker and set the new block as selected
+    setPickerOpen(false);
     setSelectedBlockId(newBlock.id);
-  }, []);
+  }, [activeContainerId]);
 
   // Handle block deletion
   const handleDeleteBlock = useCallback((blockId: string) => {
@@ -59,9 +85,25 @@ export default function NewConfigurator() {
 
   // Handle block update
   const handleUpdateBlock = useCallback((blockId: string, updates: Partial<BaseBlockConfig>) => {
-    setBlocks(prev => prev.map(block => 
-      block.id === blockId ? { ...block, ...updates } : block
-    ));
+    const updateRecursive = (currentBlocks: BaseBlockConfig[]): BaseBlockConfig[] => {
+      return currentBlocks.map(block => {
+        if (block.id === blockId) {
+          return { ...block, ...updates };
+        }
+        if (block.type === 'container' && (block.config as ContainerBlockConfig).children) {
+          return {
+            ...block,
+            config: {
+              ...block.config,
+              children: updateRecursive((block.config as ContainerBlockConfig).children as BaseBlockConfig[]),
+            } as ContainerBlockConfig,
+          };
+        }
+        return block;
+      });
+    };
+
+    setBlocks(updateRecursive);
   }, []);
 
   // Export configuration
@@ -94,6 +136,60 @@ export default function NewConfigurator() {
     // TODO: Show toast notification
     alert('Конфігурацію скопійовано в буфер обміну!');
   }, [blocks, globalSettings]);
+
+
+const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBlockSelect: (id: string) => void, onBlockDelete: (id: string) => void }> = ({ block, isEditing, onBlockSelect, onBlockDelete }) => {
+  const commonProps = { config: block.config, isEditing };
+  
+  // Wrapper for all blocks to handle selection and deletion
+  const BlockWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <div
+      className={`relative group ${isEditing ? 'cursor-pointer' : ''}`}
+      onClick={() => onBlockSelect(block.id)}
+    >
+      {children}
+      {isEditing && selectedBlockId === block.id && (
+        <div className="absolute top-0 right-0 z-20 flex space-x-1 p-1 bg-white border border-blue-500 rounded-bl-md">
+          <Button
+            size="icon"
+            variant="destructive"
+            className="h-6 w-6"
+            onClick={(e) => {
+              e.stopPropagation();
+              onBlockDelete(block.id);
+            }}
+          >
+            <Trash2 className="w-3 h-3" />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
+  switch (block.type) {
+    case 'spacer':
+      return <BlockWrapper><SpacerBlock {...commonProps} config={block.config as SpacerBlockConfig} /></BlockWrapper>;
+    case 'container':
+      return (
+        <BlockWrapper>
+          <ContainerBlock 
+            {...commonProps} 
+            config={block.config as ContainerBlockConfig} 
+            BlockRenderer={BlockRenderer}
+            onBlockSelect={onBlockSelect}
+            onBlockDelete={onBlockDelete}
+          />
+        </BlockWrapper>
+      );
+    // Add other blocks here
+    default:
+      return (
+        <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          Unknown Block Type: {block.type}
+        </div>
+      );
+  }
+};
 
   const selectedBlock = blocks.find(b => b.id === selectedBlockId);
 
@@ -165,16 +261,20 @@ export default function NewConfigurator() {
                         const definition = getBlockDefinition(block.type);
                         return (
                           <div
-                            key={block.id}
-                            className={`
-                              p-3 rounded-md cursor-pointer transition-colors
-                              ${selectedBlockId === block.id 
-                                ? 'bg-primary text-white' 
-                                : 'hover:bg-gray-100'
-                              }
-                            `}
-                            onClick={() => setSelectedBlockId(block.id)}
-                          >
+                                key={block.id}
+                                className={`
+                                  p-3 rounded-md cursor-pointer transition-colors
+                                  ${selectedBlockId === block.id 
+                                    ? 'bg-primary text-white' 
+                                    : 'hover:bg-gray-100'
+                                  }
+                                  ${block.type === 'container' ? 'border border-blue-300' : ''}
+                                `}
+                                onClick={() => {
+                                  setSelectedBlockId(block.id);
+                                  setActiveContainerId(block.type === 'container' ? block.id : null);
+                                }}
+                              >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 flex-1 min-w-0">
                                 <span className="text-lg">{definition?.icon}</span>
@@ -223,26 +323,15 @@ export default function NewConfigurator() {
                 <ScrollArea className="h-[calc(100vh-300px)]">
                   {previewMode ? (
                     <div className="space-y-4">
-                      {blocks.map((block) => {
-                        const definition = getBlockDefinition(block.type);
-                        return (
-                          <div 
-                            key={block.id} 
-                            className="p-4 border-2 border-dashed border-gray-300 rounded-lg"
-                          >
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-2xl">{definition?.icon}</span>
-                              <span className="font-medium">{definition?.nameUk}</span>
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {/* TODO: Render actual block preview */}
-                              <pre className="bg-gray-50 p-2 rounded text-xs overflow-x-auto">
-                                {JSON.stringify(block.config, null, 2)}
-                              </pre>
-                            </div>
-                          </div>
-                        );
-                      })}
+                      {blocks.map((block) => (
+                        <BlockRenderer 
+                          key={block.id} 
+                          block={block} 
+                          isEditing={false} 
+                          onBlockSelect={() => {}} // No selection in preview mode
+                          onBlockDelete={() => {}} // No deletion in preview mode
+                        />
+                      ))}
                       {blocks.length === 0 && (
                         <div className="text-center text-gray-500 py-12">
                           <p>Додайте блоки для перегляду</p>
@@ -252,6 +341,64 @@ export default function NewConfigurator() {
                   ) : (
                     <div>
                       {selectedBlock ? (
+                        <div className="mb-4 p-4 border border-gray-200 rounded-lg">
+                          <BlockRenderer 
+                            block={selectedBlock} 
+                            isEditing={true} 
+                            onBlockSelect={setSelectedBlockId}
+                            onBlockDelete={handleDeleteBlock}
+                          />
+                        </div>
+                        <Tabs defaultValue="content" className="w-full">
+                          <TabsList className="grid w-full grid-cols-3">
+                            <TabsTrigger value="content">Контент</TabsTrigger>
+                            <TabsTrigger value="style">Стиль</TabsTrigger>
+                            <TabsTrigger value="advanced">Додатково</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="content" className="mt-4">
+                            <ScrollArea className="h-[calc(100vh-450px)] p-4">
+                              {/* Block-specific controls */}
+                              {selectedBlock.type === 'spacer' && (
+                                <SpacerControls block={selectedBlock} updateBlock={(updates) => handleUpdateBlock(selectedBlock.id, updates)} />
+                              )}
+                              {selectedBlock.type === 'container' && (
+                                <ContainerControls block={selectedBlock} updateBlock={(updates) => handleUpdateBlock(selectedBlock.id, updates)} />
+                              )}
+                              {/* Add other block controls here */}
+                            </ScrollArea>
+                          </TabsContent>
+                          <TabsContent value="style">
+                            {/* TODO: Implement general style controls */}
+                            <div className="p-4 text-gray-500">Загальні налаштування стилю (типографіка, фон, рамки) будуть тут.</div>
+                          </TabsContent>
+                          <TabsContent value="advanced">
+                            {/* TODO: Implement advanced controls */}
+                            <div className="p-4 text-gray-500">Додаткові налаштування (анімація, умовна видимість, Custom CSS) будуть тут.</div>
+                          </TabsContent>
+                        </Tabs>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3 pb-4 border-b">
+                            <span className="text-3xl">
+                              {getBlockDefinition(selectedBlock.type)?.icon}
+                            </span>
+                            <div>
+                              <h3 className="font-semibold">
+                                {getBlockDefinition(selectedBlock.type)?.nameUk}
+                              </h3>
+                              <p className="text-sm text-gray-500">
+                                {getBlockDefinition(selectedBlock.type)?.descriptionUk}
+                              </p>
+                            </div>
+                          </div>
+                          <pre className="bg-gray-50 p-2 rounded text-xs overflow-x-auto">
+                            {JSON.stringify(selectedBlock.config, null, 2)}
+                          </pre>
+                        </div>
+                      ) : (
+                        <div className="text-center text-gray-500 py-12">
+                          <p>Виберіть блок для редагування</p>
+                        </div>
+                      )}
                         <div className="space-y-4">
                           <div className="flex items-center gap-3 pb-4 border-b">
                             <span className="text-3xl">

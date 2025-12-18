@@ -315,6 +315,29 @@ export const BLOCK_REGISTRY: Record<string, BlockDefinition> = {
     },
   },
 
+  spacer: {
+    type: 'spacer',
+    name: 'Spacer / Divider',
+    nameUk: 'Спейсер / Роздільник',
+    category: BlockCategory.LAYOUT,
+    description: 'Adjustable vertical space or a customizable horizontal divider line.',
+    descriptionUk: 'Налаштовуваний вертикальний простір або горизонтальна роздільна лінія.',
+    icon: '📏',
+    keywords: ['spacer', 'divider', 'separator', 'space', 'line'],
+    defaultConfig: {
+      type: 'spacer',
+      height: { desktop: '50px' },
+      divider: {
+        enabled: false,
+        style: 'solid',
+        weight: '1px',
+        color: '#e5e7eb',
+        width: '100%',
+        alignment: 'center',
+      },
+    },
+  },
+
   card: {
     type: 'card',
     name: 'Card',
