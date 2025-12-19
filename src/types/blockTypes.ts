@@ -1178,6 +1178,768 @@ export interface StickyElementConfig {
   hideOn?: ResponsiveValue<boolean>;
 }
 
+// ==================== ДОДАТКОВІ ТЕКСТОВІ БЛОКИ ====================
+
+export interface TextColumnsConfig {
+  type: 'text-columns';
+  content?: string;
+  columns?: ResponsiveValue<number>;
+  columnGap?: string;
+  columnRuleStyle?: 'none' | 'solid' | 'dashed' | 'dotted' | 'double';
+  columnRuleWidth?: string;
+  columnRuleColor?: string;
+  typography?: Typography;
+}
+
+export interface HighlightTextConfig {
+  type: 'highlight-text';
+  content?: string;
+  highlightType?: 'background' | 'underline' | 'marker' | 'box' | 'gradient';
+  highlightColor?: string;
+  highlightWidth?: string;
+  typography?: Typography;
+}
+
+export interface DropCapConfig {
+  type: 'dropcap';
+  letter?: string;
+  lines?: number;
+  fontSize?: string;
+  fontWeight?: string;
+  color?: string;
+  backgroundColor?: string;
+  shape?: 'none' | 'circle' | 'square';
+}
+
+// ==================== РОЗШИРЕНІ МЕДІА БЛОКИ ====================
+
+export interface GifAnimationConfig {
+  type: 'gif-animation';
+  src?: string;
+  alt?: string;
+  autoplay?: boolean;
+  loop?: boolean;
+  controls?: boolean;
+  maxWidth?: string;
+}
+
+export interface SVGGraphicConfig {
+  type: 'svg-graphic';
+  svgCode?: string;
+  svgUrl?: string;
+  animate?: boolean;
+  animationType?: 'draw' | 'morph' | 'color-change' | 'rotate' | 'scale';
+  interactive?: boolean;
+  hoverEffect?: HoverEffect;
+}
+
+export interface VideoBackgroundConfig {
+  type: 'video-background';
+  videoUrl?: string;
+  poster?: string;
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  overlay?: {
+    enabled?: boolean;
+    color?: string;
+    opacity?: number;
+  };
+  minHeight?: string;
+  content?: BlockConfigUnion[];
+}
+
+export interface Panorama360Config {
+  type: 'panorama-360';
+  imageUrl?: string;
+  autoRotate?: boolean;
+  rotateSpeed?: number;
+  controls?: boolean;
+  initialView?: {
+    pitch?: number;
+    yaw?: number;
+    zoom?: number;
+  };
+}
+
+// ==================== РОЗШИРЕНІ ФОРМИ ====================
+
+export interface FileUploadFormConfig {
+  type: 'file-upload-form';
+  title?: string;
+  maxFiles?: number;
+  maxFileSize?: number; // MB
+  allowedFileTypes?: string[];
+  showPreview?: boolean;
+  dragAndDrop?: boolean;
+  uploadButton?: {
+    text?: string;
+    icon?: string;
+  };
+  progressBar?: boolean;
+}
+
+export interface CalculatorFormConfig {
+  type: 'calculator-form';
+  calculatorType?: 'loan' | 'mortgage' | 'bmi' | 'roi' | 'custom';
+  fields?: Array<{
+    id: string;
+    label: string;
+    type: 'number' | 'select' | 'slider';
+    min?: number;
+    max?: number;
+    step?: number;
+    unit?: string;
+    options?: Array<{ label: string; value: string }>;
+  }>;
+  formula?: string;
+  resultLabel?: string;
+  showSteps?: boolean;
+}
+
+export interface PollFormConfig {
+  type: 'poll-form';
+  question?: string;
+  options?: Array<{
+    id: string;
+    text: string;
+    votes?: number;
+  }>;
+  allowMultiple?: boolean;
+  showResults?: 'after-vote' | 'always' | 'never';
+  showVoteCount?: boolean;
+  showPercentage?: boolean;
+  expiration?: string;
+}
+
+export interface BookingFormConfig {
+  type: 'booking-form';
+  bookingType?: 'appointment' | 'room' | 'table' | 'service';
+  fields?: Array<{
+    id: string;
+    type: 'date' | 'time' | 'datetime' | 'text' | 'select' | 'number';
+    label: string;
+    required?: boolean;
+    options?: Array<{ label: string; value: string }>;
+  }>;
+  calendar?: {
+    availableDays?: number[];
+    excludedDates?: string[];
+    timeSlots?: Array<{ start: string; end: string }>;
+    minAdvance?: number; // hours
+  };
+  confirmationEmail?: boolean;
+  paymentIntegration?: boolean;
+}
+
+export interface RegistrationFormConfig {
+  type: 'registration-form';
+  formType?: 'user' | 'event' | 'course' | 'membership';
+  fields?: Array<{
+    id: string;
+    type: 'text' | 'email' | 'password' | 'tel' | 'select' | 'checkbox';
+    label: string;
+    placeholder?: string;
+    required?: boolean;
+    validation?: string;
+  }>;
+  passwordStrength?: boolean;
+  termsCheckbox?: {
+    enabled?: boolean;
+    text?: string;
+    link?: string;
+  };
+  socialLogin?: {
+    enabled?: boolean;
+    providers?: Array<'google' | 'facebook' | 'twitter' | 'linkedin'>;
+  };
+  redirectAfterSuccess?: string;
+}
+
+// ==================== РОЗШИРЕНІ E-COMMERCE БЛОКИ ====================
+
+export interface ProductCarouselConfig {
+  type: 'product-carousel';
+  productsToShow?: ResponsiveValue<number>;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  arrows?: boolean;
+  dots?: boolean;
+  showQuickView?: boolean;
+  showWishlist?: boolean;
+  infinite?: boolean;
+}
+
+export interface MiniCartConfig {
+  type: 'mini-cart';
+  icon?: string;
+  showCount?: boolean;
+  showTotal?: boolean;
+  cartType?: 'dropdown' | 'sidebar' | 'modal';
+  emptyCartMessage?: string;
+}
+
+export interface ProductFiltersConfig {
+  type: 'product-filters';
+  filters?: Array<{
+    id: string;
+    type: 'price' | 'category' | 'tag' | 'attribute' | 'rating';
+    label: string;
+    options?: Array<{ label: string; value: string }>;
+  }>;
+  layout?: 'vertical' | 'horizontal';
+  collapsible?: boolean;
+  showCount?: boolean;
+  ajax?: boolean;
+}
+
+export interface WishlistConfig {
+  type: 'wishlist';
+  layout?: 'grid' | 'list';
+  columns?: ResponsiveValue<number>;
+  showShareButton?: boolean;
+  showMoveToCart?: boolean;
+  showRemoveButton?: boolean;
+}
+
+export interface ProductComparisonConfig {
+  type: 'product-comparison';
+  maxProducts?: number;
+  showAttributes?: string[];
+  highlightDifferences?: boolean;
+  sticky?: boolean;
+}
+
+export interface ProductReviewsConfig {
+  type: 'product-reviews';
+  productId?: string;
+  layout?: 'list' | 'grid';
+  showRating?: boolean;
+  showImages?: boolean;
+  showVerified?: boolean;
+  sorting?: Array<'newest' | 'oldest' | 'highest' | 'lowest'>;
+  pagination?: boolean;
+  reviewsPerPage?: number;
+}
+
+export interface SizeChartConfig {
+  type: 'size-chart';
+  chartType?: 'clothing' | 'shoes' | 'custom';
+  measurements?: Array<{
+    size: string;
+    values: Record<string, string>;
+  }>;
+  measurementSystem?: 'metric' | 'imperial' | 'both';
+  modal?: boolean;
+}
+
+export interface ProductBadgesConfig {
+  type: 'product-badges';
+  badges?: Array<{
+    id: string;
+    text: string;
+    type: 'new' | 'sale' | 'bestseller' | 'featured' | 'out-of-stock' | 'custom';
+    position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+    color?: string;
+  }>;
+}
+
+export interface ShippingCalculatorConfig {
+  type: 'shipping-calculator';
+  fields?: Array<{
+    id: string;
+    type: 'country' | 'state' | 'zip' | 'weight';
+    label: string;
+    required?: boolean;
+  }>;
+  carriers?: Array<{
+    name: string;
+    estimatedDays?: string;
+    price?: string;
+  }>;
+  showEstimatedDelivery?: boolean;
+}
+
+export interface RelatedProductsConfig {
+  type: 'related-products';
+  productId?: string;
+  relationType?: 'related' | 'upsell' | 'cross-sell';
+  productsToShow?: number;
+  columns?: ResponsiveValue<number>;
+  layout?: 'grid' | 'slider';
+}
+
+// ==================== РОЗШИРЕНІ ДАНІ ТА СТАТИСТИКА ====================
+
+export interface MetricsKPIConfig {
+  type: 'metrics-kpi';
+  metrics?: Array<{
+    id: string;
+    label: string;
+    value: string;
+    change?: {
+      value: string;
+      type: 'increase' | 'decrease' | 'neutral';
+    };
+    icon?: string;
+    color?: string;
+  }>;
+  layout?: ResponsiveValue<'grid' | 'inline'>;
+  columns?: ResponsiveValue<number>;
+}
+
+export interface StarRatingConfig {
+  type: 'star-rating';
+  rating?: number;
+  maxRating?: number;
+  size?: string;
+  color?: string;
+  emptyColor?: string;
+  showValue?: boolean;
+  interactive?: boolean;
+  halfStars?: boolean;
+}
+
+export interface SkillBarsConfig {
+  type: 'skill-bars';
+  skills?: Array<{
+    id: string;
+    name: string;
+    percentage: number;
+    color?: string;
+    icon?: string;
+  }>;
+  layout?: 'horizontal' | 'vertical' | 'circular';
+  showPercentage?: boolean;
+  animated?: boolean;
+}
+
+// ==================== РОЗШИРЕНІ СОЦІАЛЬНІ БЛОКИ ====================
+
+export interface InstagramFeedConfig {
+  type: 'instagram-feed';
+  username?: string;
+  layout?: 'grid' | 'carousel' | 'masonry';
+  columns?: ResponsiveValue<number>;
+  postsToShow?: number;
+  showCaption?: boolean;
+  showLikes?: boolean;
+  lightbox?: boolean;
+}
+
+export interface TwitterFeedConfig {
+  type: 'twitter-feed';
+  username?: string;
+  layout?: 'list' | 'grid';
+  tweetsToShow?: number;
+  showImages?: boolean;
+  showRetweets?: boolean;
+  theme?: 'light' | 'dark';
+}
+
+export interface FacebookCommentsConfig {
+  type: 'facebook-comments';
+  appId?: string;
+  url?: string;
+  numPosts?: number;
+  orderBy?: 'social' | 'reverse_time' | 'time';
+  colorScheme?: 'light' | 'dark';
+  width?: string;
+}
+
+export interface GoogleReviewsConfig {
+  type: 'google-reviews';
+  placeId?: string;
+  layout?: 'slider' | 'grid' | 'list';
+  reviewsToShow?: number;
+  showRating?: boolean;
+  showAvatar?: boolean;
+  minRating?: number;
+}
+
+export interface SocialProofConfig {
+  type: 'social-proof';
+  proofType?: 'follower-count' | 'recent-activity' | 'live-visitors' | 'reviews';
+  networks?: Array<'facebook' | 'twitter' | 'instagram' | 'youtube' | 'linkedin'>;
+  showIcon?: boolean;
+  showCount?: boolean;
+  animateNumber?: boolean;
+}
+
+// ==================== РОЗШИРЕНІ БІЗНЕС БЛОКИ ====================
+
+export interface OpeningHoursConfig {
+  type: 'opening-hours';
+  hours?: Array<{
+    day: string;
+    open: string;
+    close: string;
+    closed?: boolean;
+  }>;
+  timezone?: string;
+  highlightCurrent?: boolean;
+  showStatus?: boolean;
+  statusTexts?: {
+    open?: string;
+    closed?: string;
+    opensAt?: string;
+  };
+}
+
+export interface CertificatesConfig {
+  type: 'certificates';
+  certificates?: Array<{
+    id: string;
+    image: string;
+    title: string;
+    organization?: string;
+    date?: string;
+    link?: string;
+  }>;
+  layout?: 'grid' | 'slider' | 'masonry';
+  columns?: ResponsiveValue<number>;
+  lightbox?: boolean;
+}
+
+export interface CaseStudyConfig {
+  type: 'case-study';
+  title?: string;
+  client?: string;
+  industry?: string;
+  challenge?: string;
+  solution?: string;
+  results?: Array<{
+    metric: string;
+    value: string;
+    description?: string;
+  }>;
+  images?: string[];
+  testimonial?: {
+    quote: string;
+    author: string;
+    position?: string;
+  };
+}
+
+export interface PortfolioConfig {
+  type: 'portfolio';
+  items?: Array<{
+    id: string;
+    title: string;
+    category: string;
+    image: string;
+    description?: string;
+    link?: string;
+    tags?: string[];
+  }>;
+  layout?: 'grid' | 'masonry' | 'carousel';
+  columns?: ResponsiveValue<number>;
+  filterable?: boolean;
+  lightbox?: boolean;
+  loadMore?: boolean;
+}
+
+// ==================== РОЗШИРЕНІ ІНФОРМАЦІЙНІ БЛОКИ ====================
+
+export interface AnnouncementBarConfig {
+  type: 'announcement-bar';
+  message?: string;
+  icon?: string;
+  link?: string;
+  dismissible?: boolean;
+  position?: 'top' | 'bottom';
+  animation?: AnimationType;
+  countdown?: {
+    enabled?: boolean;
+    endDate?: string;
+  };
+}
+
+export interface ProgressTrackerConfig {
+  type: 'progress-tracker';
+  steps?: Array<{
+    id: string;
+    label: string;
+    description?: string;
+    icon?: string;
+  }>;
+  currentStep?: number;
+  orientation?: ResponsiveValue<'horizontal' | 'vertical'>;
+  showNumbers?: boolean;
+}
+
+export interface ProcessStepsConfig {
+  type: 'process-steps';
+  steps?: Array<{
+    id: string;
+    number?: string;
+    title: string;
+    description?: string;
+    icon?: string;
+  }>;
+  layout?: 'vertical' | 'horizontal' | 'grid';
+  columns?: ResponsiveValue<number>;
+  showConnector?: boolean;
+}
+
+export interface IconBoxConfig {
+  type: 'icon-box';
+  icon?: string;
+  title?: string;
+  description?: string;
+  link?: string;
+  iconPosition?: 'top' | 'left' | 'right';
+  iconStyle?: {
+    size?: string;
+    color?: string;
+    backgroundColor?: string;
+    shape?: 'none' | 'circle' | 'square' | 'rounded';
+    border?: boolean;
+  };
+  hoverEffect?: HoverEffect;
+}
+
+export interface FeatureBoxConfig {
+  type: 'feature-box';
+  features?: Array<{
+    id: string;
+    icon?: string;
+    title: string;
+    description?: string;
+    link?: string;
+  }>;
+  layout?: 'grid' | 'slider' | 'list';
+  columns?: ResponsiveValue<number>;
+  iconPosition?: 'top' | 'left';
+}
+
+// ==================== РОЗШИРЕНІ ТЕХНІЧНІ БЛОКИ ====================
+
+export interface QRCodeConfig {
+  type: 'qr-code';
+  content?: string;
+  size?: number;
+  foreground?: string;
+  background?: string;
+  errorCorrection?: 'L' | 'M' | 'Q' | 'H';
+  logo?: string;
+  downloadable?: boolean;
+}
+
+export interface WeatherWidgetConfig {
+  type: 'weather-widget';
+  location?: string;
+  units?: 'celsius' | 'fahrenheit';
+  showForecast?: boolean;
+  forecastDays?: number;
+  showIcon?: boolean;
+  autoUpdate?: boolean;
+  updateInterval?: number;
+}
+
+export interface CryptoTickerConfig {
+  type: 'crypto-ticker';
+  coins?: Array<string>;
+  currency?: string;
+  showChange?: boolean;
+  showChart?: boolean;
+  autoUpdate?: boolean;
+  updateInterval?: number;
+  layout?: 'horizontal' | 'vertical' | 'grid';
+}
+
+export interface StockTickerConfig {
+  type: 'stock-ticker';
+  symbols?: Array<string>;
+  showChange?: boolean;
+  showChart?: boolean;
+  autoUpdate?: boolean;
+  updateInterval?: number;
+  layout?: 'horizontal' | 'vertical' | 'grid';
+}
+
+export interface CurrencyConverterConfig {
+  type: 'currency-converter';
+  currencies?: Array<string>;
+  defaultFrom?: string;
+  defaultTo?: string;
+  showChart?: boolean;
+  autoUpdate?: boolean;
+}
+
+export interface MusicPlayerConfig {
+  type: 'music-player';
+  provider?: 'spotify' | 'soundcloud' | 'apple-music' | 'youtube-music';
+  playlistId?: string;
+  trackId?: string;
+  theme?: 'light' | 'dark' | 'compact';
+  autoplay?: boolean;
+  showArtwork?: boolean;
+}
+
+export interface Model3DConfig {
+  type: 'model-3d';
+  modelUrl?: string;
+  modelType?: 'gltf' | 'glb' | 'obj' | 'fbx';
+  autoRotate?: boolean;
+  controls?: boolean;
+  cameraPosition?: { x: number; y: number; z: number };
+  lighting?: string;
+  background?: string;
+  annotations?: Array<{
+    id: string;
+    position: { x: number; y: number; z: number };
+    title?: string;
+    description?: string;
+  }>;
+}
+
+export interface VirtualTourConfig {
+  type: 'virtual-tour';
+  scenes?: Array<{
+    id: string;
+    image: string;
+    title?: string;
+    hotspots?: Array<{
+      id: string;
+      pitch: number;
+      yaw: number;
+      type: 'scene' | 'info';
+      targetScene?: string;
+      text?: string;
+    }>;
+  }>;
+  startScene?: string;
+  autoRotate?: boolean;
+  showControls?: boolean;
+}
+
+export interface ChatbotWidgetConfig {
+  type: 'chatbot-widget';
+  provider?: 'custom' | 'intercom' | 'drift' | 'zendesk' | 'livechat';
+  botName?: string;
+  welcomeMessage?: string;
+  position?: 'bottom-right' | 'bottom-left';
+  icon?: string;
+  primaryColor?: string;
+  autoOpen?: boolean;
+  autoOpenDelay?: number;
+}
+
+export interface ProductCustomizerConfig {
+  type: 'product-customizer';
+  productId?: string;
+  customizableOptions?: Array<{
+    id: string;
+    type: 'color' | 'text' | 'image' | 'pattern';
+    label: string;
+    options?: Array<{ label: string; value: string; price?: string }>;
+  }>;
+  preview?: boolean;
+  priceUpdate?: boolean;
+}
+
+export interface SitemapConfig {
+  type: 'sitemap';
+  pages?: Array<{
+    title: string;
+    url: string;
+    children?: Array<{
+      title: string;
+      url: string;
+    }>;
+  }>;
+  layout?: 'tree' | 'columns' | 'accordion';
+  columns?: ResponsiveValue<number>;
+  showIcons?: boolean;
+}
+
+export interface TagCloudConfig {
+  type: 'tag-cloud';
+  tags?: Array<{
+    id: string;
+    text: string;
+    url?: string;
+    count?: number;
+    weight?: number;
+  }>;
+  minSize?: string;
+  maxSize?: string;
+  colors?: string[];
+  clickable?: boolean;
+}
+
+export interface AvailabilityCalendarConfig {
+  type: 'availability-calendar';
+  resourceId?: string;
+  availableDates?: Array<{
+    date: string;
+    slots?: Array<{ time: string; available: boolean }>;
+  }>;
+  selectable?: boolean;
+  multiSelect?: boolean;
+  minAdvance?: number;
+  maxAdvance?: number;
+}
+
+export interface TableBookingConfig {
+  type: 'table-booking';
+  restaurant?: {
+    name: string;
+    tables?: Array<{
+      id: string;
+      capacity: number;
+      available?: boolean;
+    }>;
+  };
+  timeSlots?: Array<string>;
+  duration?: number;
+  minPartySize?: number;
+  maxPartySize?: number;
+}
+
+export interface ClassScheduleConfig {
+  type: 'class-schedule';
+  classes?: Array<{
+    id: string;
+    name: string;
+    instructor?: string;
+    day: string;
+    time: string;
+    duration?: number;
+    capacity?: number;
+    enrolled?: number;
+    difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  }>;
+  layout?: 'grid' | 'list' | 'calendar';
+  filterable?: boolean;
+  bookable?: boolean;
+}
+
+// ==================== FLIP BOX ====================
+
+export interface FlipBoxConfig {
+  type: 'flip-box';
+  height?: string;
+  flipDirection?: 'horizontal' | 'vertical';
+  frontSide?: {
+    icon?: string;
+    title?: string;
+    description?: string;
+    background?: BackgroundSettings;
+  };
+  backSide?: {
+    icon?: string;
+    title?: string;
+    description?: string;
+    button?: {
+      text?: string;
+      link?: string;
+    };
+    background?: BackgroundSettings;
+  };
+}
+
 // ==================== GLOBAL SETTINGS ====================
 
 export interface GlobalSettings {
@@ -1255,17 +2017,29 @@ export interface GlobalSettings {
 // ==================== UNIFIED BLOCK CONFIG ====================
 
 export type BlockConfigUnion = 
+  // Text Blocks
   | HeadingBlockConfig
   | ParagraphBlockConfig
   | QuoteBlockConfig
   | ListBlockConfig
   | IconTextBlockConfig
+  | TextColumnsConfig
+  | HighlightTextConfig
+  | DropCapConfig
+  
+  // Media Blocks
   | ImageBlockConfig
   | GalleryBlockConfig
   | VideoBlockConfig
   | AudioPlayerConfig
   | InteractiveImageConfig
   | ImageComparisonConfig
+  | GifAnimationConfig
+  | SVGGraphicConfig
+  | VideoBackgroundConfig
+  | Panorama360Config
+  
+  // Layout Blocks
   | ContainerBlockConfig
   | ColumnBlockConfig
   | AccordionBlockConfig
@@ -1273,48 +2047,120 @@ export type BlockConfigUnion =
   | ModalBlockConfig
   | CardBlockConfig
   | SpacerBlockConfig
+  
+  // Navigation Blocks
   | MenuBlockConfig
   | BreadcrumbsBlockConfig
   | PaginationBlockConfig
   | AnchorLinksConfig
   | TableOfContentsConfig
+  
+  // Buttons & CTA
   | ButtonBlockConfig
   | ButtonGroupConfig
   | FloatingActionButtonConfig
   | CTABlockConfig
+  
+  // Forms
   | ContactFormConfig
   | NewsletterFormConfig
   | SearchFormConfig
   | QuizFormConfig
+  | FileUploadFormConfig
+  | CalculatorFormConfig
+  | PollFormConfig
+  | BookingFormConfig
+  | RegistrationFormConfig
+  
+  // E-Commerce
   | ProductGridConfig
   | ProductCardConfig
   | AddToCartButtonConfig
   | PricingTableConfig
   | CountdownTimerConfig
+  | ProductCarouselConfig
+  | MiniCartConfig
+  | ProductFiltersConfig
+  | WishlistConfig
+  | ProductComparisonConfig
+  | ProductReviewsConfig
+  | SizeChartConfig
+  | ProductBadgesConfig
+  | ShippingCalculatorConfig
+  | RelatedProductsConfig
+  
+  // Data & Statistics
   | ProgressBarConfig
   | CounterBlockConfig
   | ChartBlockConfig
   | TimelineBlockConfig
   | ComparisonTableConfig
+  | MetricsKPIConfig
+  | StarRatingConfig
+  | SkillBarsConfig
+  
+  // Social & Communication
   | SocialShareConfig
   | TestimonialBlockConfig
   | CommentsBlockConfig
   | FAQBlockConfig
+  | InstagramFeedConfig
+  | TwitterFeedConfig
+  | FacebookCommentsConfig
+  | GoogleReviewsConfig
+  | SocialProofConfig
+  
+  // Team & Contacts
   | TeamMemberConfig
   | ContactInfoConfig
   | MapBlockConfig
   | LogoCarouselConfig
+  | OpeningHoursConfig
+  | CertificatesConfig
+  | CaseStudyConfig
+  | PortfolioConfig
+  
+  // Events & Time
   | CalendarBlockConfig
   | EventCardConfig
   | ScheduleBlockConfig
+  
+  // Blog Blocks
   | BlogGridConfig
   | PostCardConfig
   | AuthorBoxConfig
+  
+  // Info Blocks
+  | AnnouncementBarConfig
+  | ProgressTrackerConfig
+  | ProcessStepsConfig
+  | IconBoxConfig
+  | FeatureBoxConfig
+  
+  // Technical Blocks
   | CodeBlockConfig
   | EmbedBlockConfig
+  | QRCodeConfig
+  | WeatherWidgetConfig
+  | CryptoTickerConfig
+  | StockTickerConfig
+  | CurrencyConverterConfig
+  | MusicPlayerConfig
+  | Model3DConfig
+  | VirtualTourConfig
+  | ChatbotWidgetConfig
+  | ProductCustomizerConfig
+  | SitemapConfig
+  | TagCloudConfig
+  | AvailabilityCalendarConfig
+  | TableBookingConfig
+  | ClassScheduleConfig
+  
+  // Special Blocks
   | AlertBlockConfig
   | ParticlesConfig
-  | StickyElementConfig;
+  | StickyElementConfig
+  | FlipBoxConfig;
 
 export interface BaseBlockConfig {
   id: string;
