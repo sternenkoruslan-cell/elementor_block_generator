@@ -14,6 +14,63 @@ Elementor Block Generator — це fullstack застосунок для ств�
 - **Backend**: Express, tRPC, Drizzle ORM (MySQL), esbuild.
 - **Інше**: dotenv для конфігів, Vitest для тестів, pnpm як пакетний менеджер.
 
+## Запуск на Linux
+
+1. **Встановіть залежності**
+   - Node.js 20+ (рекомендовано через [nvm](https://github.com/nvm-sh/nvm)).
+   - pnpm `npm install -g pnpm`.
+   - MySQL Server (локально або у контейнері) — використовується Drizzle.
+
+2. **Клон і підготовка**
+   ```bash
+   git clone <repo-url>
+   cd elementor_block_generator
+   pnpm install
+   ```
+
+3. **Налаштування бази даних MySQL**
+   Встановіть та запустіть MySQL Server (для Debian/Ubuntu):
+   ```bash
+   sudo apt update
+   sudo apt install mysql-server -y
+   sudo service mysql start
+   ```
+   Створіть базу даних, користувача та надайте йому права:
+   ```bash
+   sudo mysql -e "CREATE DATABASE elementor_db;"
+   sudo mysql -e "CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';"
+   sudo mysql -e "GRANT ALL PRIVILEGES ON elementor_db.* TO 'user'@'localhost';"
+   sudo mysql -e "FLUSH PRIVILEGES;"
+   ```
+   > **Примітка:** Для продакшн-середовища використовуйте більш складний пароль замість `password`.
+
+4. **Налаштуйте середовище**
+   Створіть `.env` у корені та заповніть потрібні змінні (за потреби видаліть непотрібні):
+   ```env
+   NODE_ENV=development
+   PORT=3000
+   DATABASE_URL=mysql://user:password@localhost:3306/elementor_db
+   JWT_SECRET=replace_me
+   VITE_APP_ID=local
+   OAUTH_SERVER_URL=http://localhost:3000/api/oauth
+   OWNER_OPEN_ID=admin
+   BUILT_IN_FORGE_API_URL=
+   BUILT_IN_FORGE_API_KEY=
+   ```
+   Backend читає їх у `server/_core/env.ts`. 【F:server/_core/env.ts†L1-L10】
+
+5. **Міграції БД (за потреби)**
+   Якщо потрібна БД, задайте `DATABASE_URL` і виконайте:
+   ```bash
+   pnpm db:push
+   ```
+
+6. **Режим розробки**
+   ```bash
+   pnpm dev
+   ```
+   Сервер сам займе доступний порт, починаючи з 3000, піднявши Vite для фронтенду та tRPC API. 【F:server/_core/index.ts†L1-L51】
+
 ## Запуск на Windows
 1. **Встановіть залежності**
    - Node.js 20+ (можна через [nvm-windows](https://github.com/coreybutler/nvm-windows)).
