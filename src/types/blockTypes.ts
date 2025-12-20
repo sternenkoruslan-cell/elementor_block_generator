@@ -34,8 +34,7 @@ export enum BlockCategory {
   LAYOUT = 'layout',
   
   // Interactive Blocks
-  NAVIGATION = 'navigation',
-  BUTTONS_CTA = 'buttons-cta',
+  INTERACTIVE = 'interactive',
   
   // Forms
   FORMS = 'forms',
@@ -48,11 +47,10 @@ export enum BlockCategory {
   
   // Social & Communication
   SOCIAL = 'social',
-  COMMUNICATION = 'communication',
+
   
   // Business
-  TEAM_CONTACTS = 'team-contacts',
-  INFO = 'info',
+  BUSINESS = 'business',
   
   // Events & Time
   EVENTS = 'events',

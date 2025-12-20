@@ -12,7 +12,7 @@ export const heroExample: BaseBlockConfig = {
   id: 'example_hero',
   type: 'cta',
   name: 'Hero секція',
-  category: BlockCategory.BUTTONS_CTA,
+  category: BlockCategory.INTERACTIVE,
   config: {
     type: 'cta',
     layout: 'cover',
@@ -325,7 +325,7 @@ export const faqExample: BaseBlockConfig = {
   id: 'example_faq',
   type: 'faq',
   name: 'Часті питання',
-  category: BlockCategory.COMMUNICATION,
+  category: BlockCategory.INTERACTIVE,
   config: {
     type: 'faq',
     layout: 'accordion',
@@ -366,7 +366,7 @@ export const teamExample: BaseBlockConfig = {
   id: 'example_team',
   type: 'team-member',
   name: 'Наша команда',
-  category: BlockCategory.TEAM_CONTACTS,
+  category: BlockCategory.BUSINESS,
   config: {
     type: 'team-member',
     layout: 'grid',
