@@ -460,7 +460,10 @@ const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBl
                       ) : (
                         <div className="text-center text-gray-500 py-12">
                           <Settings className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                          <p>Виберіть блок зі списку для редагування</p>
+                          <p className="text-lg font-semibold mb-2">Редактор блоків</p>
+                          <p className="text-sm">Виберіть блок зі списку ліворуч, щоб почати налаштування.</p>
+                          <p className="text-xs mt-1">Або натисніть "+" у верхньому лівому куті, щоб додати новий блок.</p>
+                          
                         </div>
                       )}
                     </div>
@@ -508,11 +511,21 @@ const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBl
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-500">Виберіть блок</p>
+                      <div className="p-4 bg-gray-50 rounded-lg text-center">
+                          <Settings className="w-6 h-6 mx-auto mb-2 text-gray-400" />
+                          <p className="text-sm font-medium">Налаштування блоку</p>
+                          <p className="text-xs text-gray-500 mt-1">Виберіть блок у Редакторі або в списку ліворуч, щоб побачити його налаштування.</p>
+                        </div>
                     )}
                   </TabsContent>
 
                   <TabsContent value="global" className="space-y-4 mt-4">
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-800 font-medium">Глобальні налаштування</p>
+                      <p className="text-xs text-blue-600 mt-1">
+                        Тут ви можете налаштувати загальні параметри, такі як основні кольори, типографіка та відступи, які будуть застосовані до всіх блоків за замовчуванням.
+                      </p>
+                    </div>
                     <div>
                       <h4 className="text-sm font-medium mb-2">Кольори</h4>
                       <div className="space-y-2">
