@@ -1,16 +1,45 @@
 /**
  * Comprehensive Block Type System for Elementor-like Block Builder
  * Covers all major categories: Content, Structure, Interactive, E-Commerce, Data, Social, Business, Events, and Special
+ * 
+ * ARCHITECTURE NOTES:
+ * - Types are organized by functional groups for better maintainability
+ * - Each section contains related types and interfaces
+ * - Use union types (BlockConfigUnion) for type-safe block configurations
+ * 
+ * REFACTORING RECOMMENDATIONS:
+ * - When adding new types, group them by functionality
+ * - Consider splitting large type files by category if they exceed 500 lines
+ * - Use type aliases for commonly repeated patterns
+ * - Document complex type relationships with JSDoc comments
  */
 
 // ==================== GENERAL TYPES ====================
+// Fundamental types used across all block configurations
 
+// ==================== GENERAL TYPES ====================
+// Fundamental types used across all block configurations
+
+/**
+ * Responsive Value Type
+ * Allows different values for mobile, tablet, and desktop breakpoints
+ * @example
+ * const fontSize: ResponsiveValue<string> = {
+ *   mobile: '14px',
+ *   tablet: '16px',
+ *   desktop: '18px'
+ * };
+ */
 export type ResponsiveValue<T> = {
   mobile?: T;
   tablet?: T;
   desktop?: T;
 };
 
+/**
+ * Animation Types
+ * Defines available animation effects for block entrance
+ */
 export type AnimationType = 
   | 'none' | 'fadeIn' | 'fadeInUp' | 'fadeInDown' | 'fadeInLeft' | 'fadeInRight'
   | 'slideIn' | 'slideInUp' | 'slideInDown' | 'slideInLeft' | 'slideInRight'
@@ -18,13 +47,32 @@ export type AnimationType =
   | 'rotateIn' | 'flipInX' | 'flipInY' | 'pulse' | 'shake' | 'swing'
   | 'kenBurns' | 'parallax';
 
+/**
+ * Hover Effects
+ * Defines available hover effects for interactive elements
+ */
 export type HoverEffect = 
   | 'none' | 'grow' | 'shrink' | 'float' | 'lift' | 'sink'
   | 'glow' | 'shadow' | 'brighten' | 'darken' | 'blur'
   | 'rotate' | 'skew' | 'perspective';
 
 // ==================== BLOCK CATEGORIES ====================
+// Organized taxonomy for all block types
+// Categories help users navigate and find the right blocks quickly
 
+/**
+ * Block Category Enum
+ * Defines all available block categories in the system
+ * 
+ * CATEGORY GROUPS:
+ * - Content: TEXT, MEDIA
+ * - Structure: LAYOUT
+ * - Interactive: INTERACTIVE, NAVIGATION, BUTTONS_CTA
+ * - Forms & Commerce: FORMS, ECOMMERCE
+ * - Data & Social: DATA_STATS, SOCIAL, COMMUNICATION
+ * - Business & Events: BUSINESS, TEAM_CONTACTS, EVENTS
+ * - Technical: BLOG, TECHNICAL, EFFECTS, INFO, SPECIAL
+ */
 export enum BlockCategory {
   // Content Blocks
   TEXT = 'text',
@@ -35,6 +83,8 @@ export enum BlockCategory {
   
   // Interactive Blocks
   INTERACTIVE = 'interactive',
+  NAVIGATION = 'navigation',
+  BUTTONS_CTA = 'buttons-cta',
   
   // Forms
   FORMS = 'forms',
@@ -47,10 +97,11 @@ export enum BlockCategory {
   
   // Social & Communication
   SOCIAL = 'social',
-
+  COMMUNICATION = 'communication',
   
   // Business
   BUSINESS = 'business',
+  TEAM_CONTACTS = 'team-contacts',
   
   // Events & Time
   EVENTS = 'events',
@@ -61,15 +112,25 @@ export enum BlockCategory {
   // Blog & News
   BLOG = 'blog',
   
-  // Technical
+  // Technical & Info
   TECHNICAL = 'technical',
+  INFO = 'info',
   
   // Additional
   SPECIAL = 'special',
 }
 
-// ==================== TYPOGRAPHY ====================
+// ==================== STYLING TYPES ====================
+// Common styling interfaces used across multiple block types
+// These types provide consistent styling options for all blocks
 
+// --- Typography Types ---
+
+/**
+ * Typography Interface
+ * Comprehensive typography settings for text elements
+ * Supports responsive font sizes and full CSS text properties
+ */
 export interface Typography {
   fontFamily?: string;
   fontSize?: ResponsiveValue<string>;
@@ -83,8 +144,13 @@ export interface Typography {
   textShadow?: string;
 }
 
-// ==================== SPACING ====================
+// --- Spacing Types ---
 
+/**
+ * Spacing Interface
+ * Controls padding, margin, and gap with responsive support
+ * All values support CSS units (px, rem, em, %, etc.)
+ */
 export interface Spacing {
   padding?: ResponsiveValue<{
     top?: string;
@@ -103,8 +169,12 @@ export interface Spacing {
   gap?: ResponsiveValue<string>;
 }
 
-// ==================== BORDER & EFFECTS ====================
+// --- Border & Shadow Types ---
 
+/**
+ * Border Interface
+ * Defines border styling including individual corner radius control
+ */
 export interface Border {
   width?: string;
   style?: 'none' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
@@ -118,6 +188,10 @@ export interface Border {
   };
 }
 
+/**
+ * Shadow Interface
+ * Supports both box-shadow and text-shadow effects
+ */
 export interface Shadow {
   boxShadow?: string;
   textShadow?: string;
@@ -129,6 +203,13 @@ export interface Shadow {
   offsetY?: string;
 }
 
+// --- Background Types ---
+
+/**
+ * Background Settings Interface
+ * Supports colors, gradients, images, and video backgrounds
+ * Includes advanced options like blend modes and overlays
+ */
 export interface BackgroundSettings {
   type?: 'color' | 'gradient' | 'image' | 'video';
   color?: string;
@@ -156,8 +237,16 @@ export interface BackgroundSettings {
   blendMode?: string;
 }
 
-// ==================== TEXT BLOCKS ====================
+// ==================== CONTENT BLOCKS ====================
+// Content-focused block types for text and media elements
 
+// --- Text Block Types ---
+// Text blocks: heading, paragraph, quote, list, icon-text
+
+/**
+ * Heading Block Configuration
+ * Supports H1-H6 tags with full typography control
+ */
 export interface HeadingBlockConfig {
   type: 'heading';
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -239,8 +328,13 @@ export interface IconTextBlockConfig {
   descriptionTypography?: Typography;
 }
 
-// ==================== MEDIA BLOCKS ====================
+// --- Media Block Types ---
+// Media blocks: image, gallery, video, audio, interactive-image, image-comparison
 
+/**
+ * Image Block Configuration
+ * Single image with caption, lightbox, and advanced filters
+ */
 export interface ImageBlockConfig {
   type: 'image';
   src?: string;
@@ -359,8 +453,16 @@ export interface ImageComparisonConfig {
   };
 }
 
-// ==================== LAYOUT BLOCKS ====================
+// ==================== STRUCTURAL BLOCKS ====================
+// Layout and container blocks for page structure
 
+// --- Layout Block Types ---
+// Layout blocks: container, columns, accordion, tabs, modal, spacer, card
+
+/**
+ * Container Block Configuration
+ * Main content wrapper with width and positioning controls
+ */
 export interface ContainerBlockConfig {
   type: 'container';
   width?: 'full' | 'boxed' | 'custom';
