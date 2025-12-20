@@ -1,6 +1,22 @@
 /**
  * Example Block Configurations
  * Ready-to-use examples for common blocks
+ * 
+ * PURPOSE:
+ * These examples serve as:
+ * 1. Demonstrations of block capabilities
+ * 2. Starting templates for users
+ * 3. Reference implementations for developers
+ * 
+ * USAGE:
+ * - Import specific examples: import { heroExample } from '@/examples/blockExamples';
+ * - Get example by name: getExample('hero')
+ * - Get all examples: allExamples
+ * 
+ * ADDING NEW EXAMPLES:
+ * 1. Create a new BaseBlockConfig constant
+ * 2. Add it to the allExamples array
+ * 3. Add it to the examples object in getExample()
  */
 
 import { BaseBlockConfig, BlockCategory } from '@/types/blockTypes';
@@ -366,7 +382,7 @@ export const teamExample: BaseBlockConfig = {
   id: 'example_team',
   type: 'team-member',
   name: 'Наша команда',
-  category: BlockCategory.BUSINESS,
+  category: BlockCategory.TEAM_CONTACTS,
   config: {
     type: 'team-member',
     layout: 'grid',
@@ -416,7 +432,309 @@ export const teamExample: BaseBlockConfig = {
 };
 
 /**
+ * Example: Newsletter Signup
+ * Modern newsletter subscription form with GDPR compliance
+ */
+export const newsletterExample: BaseBlockConfig = {
+  id: 'example_newsletter',
+  type: 'newsletter-form',
+  name: 'Підписка на розсилку',
+  category: BlockCategory.FORMS,
+  config: {
+    type: 'newsletter-form',
+    title: '📧 Будьте в курсі подій',
+    description: 'Отримуйте новини та оновлення безпосередньо на вашу пошту',
+    placeholder: 'Ваш email...',
+    buttonText: 'Підписатись',
+    layout: 'inline',
+    gdprCheckbox: {
+      enabled: true,
+      text: 'Я погоджуюсь з умовами обробки персональних даних',
+    },
+    successMessage: 'Дякуємо за підписку! Перевірте свою пошту.',
+  },
+  spacing: {
+    padding: { desktop: { all: '50px 40px' } },
+  },
+  background: {
+    type: 'gradient',
+    gradient: {
+      type: 'linear',
+      angle: 45,
+      colors: [
+        { color: '#4F46E5', position: 0 },
+        { color: '#7C3AED', position: 100 },
+      ],
+    },
+  },
+  border: {
+    radius: { all: '16px' },
+  },
+};
+
+/**
+ * Example: Stats Counter
+ * Animated statistics counters showcasing key metrics
+ */
+export const statsExample: BaseBlockConfig = {
+  id: 'example_stats',
+  type: 'counter',
+  name: 'Статистика',
+  category: BlockCategory.DATA_STATS,
+  config: {
+    type: 'counter',
+    layout: { desktop: 'grid' },
+    columns: { desktop: 4, tablet: 2, mobile: 1 },
+    counters: [
+      {
+        id: '1',
+        startValue: 0,
+        endValue: 10000,
+        suffix: '+',
+        label: 'Задоволених клієнтів',
+        icon: '😊',
+        duration: 2000,
+      },
+      {
+        id: '2',
+        startValue: 0,
+        endValue: 250,
+        suffix: '+',
+        label: 'Завершених проектів',
+        icon: '🚀',
+        duration: 2000,
+      },
+      {
+        id: '3',
+        startValue: 0,
+        endValue: 50,
+        suffix: '+',
+        label: 'Членів команди',
+        icon: '👥',
+        duration: 2000,
+      },
+      {
+        id: '4',
+        startValue: 0,
+        endValue: 15,
+        suffix: ' років',
+        label: 'Досвіду',
+        icon: '⭐',
+        duration: 2000,
+      },
+    ],
+    animateOnScroll: true,
+  },
+  spacing: {
+    padding: { desktop: { all: '60px 20px' } },
+    gap: { desktop: '32px' },
+  },
+  background: {
+    type: 'color',
+    color: '#F9FAFB',
+  },
+};
+
+/**
+ * Example: Service Cards
+ * Grid of service/feature cards with icons
+ */
+export const servicesExample: BaseBlockConfig = {
+  id: 'example_services',
+  type: 'feature-box',
+  name: 'Наші послуги',
+  category: BlockCategory.INFO,
+  config: {
+    type: 'feature-box',
+    layout: 'grid',
+    columns: { desktop: 3, tablet: 2, mobile: 1 },
+    iconPosition: 'top',
+    features: [
+      {
+        id: '1',
+        icon: '🎨',
+        title: 'Веб-дизайн',
+        description: 'Створюємо красиві та функціональні інтерфейси',
+        link: '#design',
+      },
+      {
+        id: '2',
+        icon: '💻',
+        title: 'Розробка',
+        description: 'Професійна розробка веб-додатків',
+        link: '#development',
+      },
+      {
+        id: '3',
+        icon: '📱',
+        title: 'Мобільні додатки',
+        description: 'Нативні та крос-платформені рішення',
+        link: '#mobile',
+      },
+      {
+        id: '4',
+        icon: '🚀',
+        title: 'SEO оптимізація',
+        description: 'Виведемо ваш сайт в ТОП Google',
+        link: '#seo',
+      },
+      {
+        id: '5',
+        icon: '🛡️',
+        title: 'Безпека',
+        description: 'Захист даних та інфраструктури',
+        link: '#security',
+      },
+      {
+        id: '6',
+        icon: '📊',
+        title: 'Аналітика',
+        description: 'Відстеження та аналіз метрик',
+        link: '#analytics',
+      },
+    ],
+  },
+  spacing: {
+    padding: { desktop: { all: '60px 40px' } },
+    gap: { desktop: '32px' },
+  },
+};
+
+/**
+ * Example: Video Background Hero
+ * Hero section with video background
+ */
+export const videoHeroExample: BaseBlockConfig = {
+  id: 'example_video_hero',
+  type: 'video-background',
+  name: 'Hero з відео фоном',
+  category: BlockCategory.MEDIA,
+  config: {
+    type: 'video-background',
+    videoUrl: 'https://example.com/hero-video.mp4',
+    autoplay: true,
+    loop: true,
+    muted: true,
+    overlay: {
+      enabled: true,
+      color: '#000000',
+      opacity: 0.5,
+    },
+    minHeight: '600px',
+    content: [
+      {
+        id: 'content_1',
+        type: 'heading',
+        config: {
+          type: 'heading',
+          tag: 'h1',
+          content: 'Інновації у дії',
+          typography: {
+            fontSize: { desktop: '56px', tablet: '42px', mobile: '32px' },
+            color: '#FFFFFF',
+            fontWeight: '700',
+          },
+        },
+      },
+    ],
+  },
+  spacing: {
+    padding: { desktop: { all: '100px 40px' } },
+  },
+};
+
+/**
+ * Example: Product Showcase
+ * E-commerce product grid with filters
+ */
+export const productShowcaseExample: BaseBlockConfig = {
+  id: 'example_products',
+  type: 'product-grid',
+  name: 'Каталог товарів',
+  category: BlockCategory.ECOMMERCE,
+  config: {
+    type: 'product-grid',
+    layout: 'grid',
+    columns: { desktop: 4, tablet: 3, mobile: 2 },
+    productsPerPage: 12,
+    showFilters: true,
+    showSorting: true,
+    showQuickView: true,
+    showWishlist: true,
+    hoverEffect: 'lift',
+    pagination: true,
+  },
+  spacing: {
+    padding: { desktop: { all: '40px' } },
+    gap: { desktop: '24px' },
+  },
+};
+
+/**
+ * Example: Timeline / History
+ * Company history or process timeline
+ */
+export const timelineExample: BaseBlockConfig = {
+  id: 'example_timeline',
+  type: 'timeline',
+  name: 'Історія компанії',
+  category: BlockCategory.DATA_STATS,
+  config: {
+    type: 'timeline',
+    orientation: { desktop: 'vertical' },
+    alternating: true,
+    items: [
+      {
+        id: '1',
+        date: '2015',
+        title: 'Заснування компанії',
+        description: 'Почали з невеликого стартапу з 3 людьми',
+        icon: '🎯',
+      },
+      {
+        id: '2',
+        date: '2017',
+        title: 'Перший великий проект',
+        description: 'Запустили платформу для 100,000+ користувачів',
+        icon: '🚀',
+      },
+      {
+        id: '3',
+        date: '2019',
+        title: 'Розширення команди',
+        description: 'Зросли до 20+ професіоналів',
+        icon: '👥',
+      },
+      {
+        id: '4',
+        date: '2021',
+        title: 'Міжнародний ринок',
+        description: 'Вийшли на європейський ринок',
+        icon: '🌍',
+      },
+      {
+        id: '5',
+        date: '2024',
+        title: 'Лідери індустрії',
+        description: 'ТОП-10 компаній в нашій сфері',
+        icon: '🏆',
+      },
+    ],
+    lineColor: '#3B82F6',
+    iconStyle: {
+      backgroundColor: '#3B82F6',
+      color: '#FFFFFF',
+      size: '48px',
+    },
+  },
+  spacing: {
+    padding: { desktop: { all: '60px 40px' } },
+  },
+};
+
+/**
  * All examples collection
+ * Complete list of all available examples
  */
 export const allExamples: BaseBlockConfig[] = [
   heroExample,
@@ -427,10 +745,18 @@ export const allExamples: BaseBlockConfig[] = [
   contactFormExample,
   faqExample,
   teamExample,
+  newsletterExample,
+  statsExample,
+  servicesExample,
+  videoHeroExample,
+  productShowcaseExample,
+  timelineExample,
 ];
 
 /**
  * Get example by name
+ * @param name - Example identifier (e.g., 'hero', 'pricing')
+ * @returns BaseBlockConfig or undefined if not found
  */
 export function getExample(name: string): BaseBlockConfig | undefined {
   const examples: Record<string, BaseBlockConfig> = {
@@ -442,7 +768,35 @@ export function getExample(name: string): BaseBlockConfig | undefined {
     contact: contactFormExample,
     faq: faqExample,
     team: teamExample,
+    newsletter: newsletterExample,
+    stats: statsExample,
+    services: servicesExample,
+    'video-hero': videoHeroExample,
+    products: productShowcaseExample,
+    timeline: timelineExample,
   };
   
   return examples[name];
+}
+
+/**
+ * Get examples by category
+ * @param category - BlockCategory to filter by
+ * @returns Array of examples in the specified category
+ */
+export function getExamplesByCategory(category: BlockCategory): BaseBlockConfig[] {
+  return allExamples.filter(example => example.category === category);
+}
+
+/**
+ * Get popular/featured examples
+ * Returns most commonly used examples for quick access
+ */
+export function getFeaturedExamples(): BaseBlockConfig[] {
+  return [
+    heroExample,
+    pricingExample,
+    contactFormExample,
+    testimonialsExample,
+  ];
 }
