@@ -1,0 +1,1 @@
+version: '3.8'\nservices:\n  app:\n    volumes:\n      - .:/app\n    environment:\n      - NODE_ENV=development\n      - DEBUG=app:*\n  db:\n    image: postgres:latest\n    volumes:\n      - db_data:/var/lib/postgresql/data\n    environment:\n      - POSTGRES_USER=myuser\n      - POSTGRES_PASSWORD=mypassword\n\nvolumes:\n  db_data:
