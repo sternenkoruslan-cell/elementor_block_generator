@@ -2,23 +2,20 @@
 
 FROM node:20-alpine
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Install pnpm
-RUN npm install -g pnpm
-
-# Copy package.json and pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
+# Copy package.json and pnpm-lock.yaml first
+cOPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN pnpm install
+rUN npm install -g pnpm && pnpm install
 
-# Copy the rest of the application code
+# Copy the rest of the application
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+# Expose the port
+EXPOSE 5173
 
-# Run the dev command
-CMD ["pnpm", "dev"]
+# Run the application
+CMD ["pnpm", "vite", "dev"]
