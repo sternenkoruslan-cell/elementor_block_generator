@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    container_name: elementor_mysql
+    container_name: elementor_mysql_dev
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data_dev:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
       interval: 10s
@@ -23,26 +23,28 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: elementor_app
+      dockerfile: Dockerfile.dev
+    container_name: elementor_app_dev
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: 3000
       DATABASE_URL: mysql://user:password@mysql:3306/elementor_db
-      JWT_SECRET: your_jwt_secret_key_change_in_production
-      VITE_APP_ID: docker
+      JWT_SECRET: dev_jwt_secret
+      VITE_APP_ID: docker_dev
       OAUTH_SERVER_URL: http://localhost:3000/api/oauth
       OWNER_OPEN_ID: admin
     depends_on:
       mysql:
         condition: service_healthy
     volumes:
+      - .:/app
+      - /app/node_modules
       - ./logs:/app/logs
-    command: sh -c "sleep 10 && pnpm db:push && pnpm start"
+    command: sh -c "sleep 10 && pnpm db:push && pnpm dev"
 
 volumes:
-  mysql_data:
+  mysql_data_dev:
     driver: local
