@@ -585,9 +585,9 @@ const Configurator: React.FC = () => {
                       onChange={(e) => setSelectedBreakpoint(e.target.value as 'mobile' | 'tablet' | 'desktop')}
                       label="Breakpoint"
                     >
-                      <MenuItem value="mobile">Mobile (< 600px)</MenuItem>
+                      <MenuItem value="mobile">Mobile (&lt; 600px)</MenuItem>
                       <MenuItem value="tablet">Tablet (600px - 960px)</MenuItem>
-                      <MenuItem value="desktop">Desktop (> 960px)</MenuItem>
+                      <MenuItem value="desktop">Desktop (&gt; 960px)</MenuItem>
                     </Select>
                   </FormControl>
 

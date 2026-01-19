@@ -341,6 +341,7 @@ const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBl
                   ) : (
                     <div>
                       {selectedBlock ? (
+                        <>
                         <div className="mb-4 p-4 border border-gray-200 rounded-lg">
                           <BlockRenderer 
                             block={selectedBlock} 
@@ -394,6 +395,7 @@ const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBl
                             {JSON.stringify(selectedBlock.config, null, 2)}
                           </pre>
                         </div>
+                        </>
                       ) : (
                         <div className="text-center text-gray-500 py-12">
                           <p>Виберіть блок для редагування</p>
@@ -488,6 +490,7 @@ const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBl
 
                   <TabsContent value="blocks" className="space-y-4 mt-4">
                     {selectedBlock ? (
+                        <>
                       <div className="space-y-4">
                         <div>
                           <h4 className="text-sm font-medium mb-2">Відступи</h4>
@@ -510,6 +513,7 @@ const BlockRenderer: React.FC<{ block: BaseBlockConfig, isEditing: boolean, onBl
                           {/* TODO: Add animation controls */}
                         </div>
                       </div>
+                        </>
                     ) : (
                       <div className="p-4 bg-gray-50 rounded-lg text-center">
                           <Settings className="w-6 h-6 mx-auto mb-2 text-gray-400" />
