@@ -1,8 +1,9 @@
+.git/
 node_modules/
 dist/
 build/
-.git/
-.gitignore
-README.md
-.env.example
-# Add any other unnecessary files here
+.env
+logs/
+.vscode/
+.idea/
+*.iml
